@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Jumma Mubarak</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Added Noto Nastaliq Urdu font -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&family=Pacifico&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #0c0e3a; --secondary-color: #3f185f;
+      --text-color: #ffffff; --card-bg: rgba(255, 255, 255, 0.1);
+      --input-bg: rgba(255, 255, 255, 0.8);
+    }
+    
+    body {
+      margin: 0; font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: var(--text-color); display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-start;
+      padding: 4rem 1rem 6rem; min-height: 100vh; text-align: center;
+    }
+
+    #background-wrapper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; }
+    .particle { position: absolute; background: rgba(255, 255, 255, 0.6); border-radius: 50%; animation: move linear infinite; filter: blur(1px); }
+    .shooting-star { position: absolute; height: 2px; background: linear-gradient(-45deg, rgba(255,255,255,0.8), rgba(255,255,255,0)); border-radius: 999px; filter: drop-shadow(0 0 6px white); animation: shooting-star-animation 3s linear infinite; }
+    @keyframes move { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-120vh); opacity: 0; } }
+    @keyframes shooting-star-animation { 0% { transform:translateX(0) translateY(0); opacity:1; } 80%{opacity:1;} 100% { transform:translateX(300px) translateY(300px); opacity:0; } }
+
+    #play-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); color: white; display: flex; justify-content: center; align-items: center; flex-direction: column; z-index: 10000; cursor: pointer; font-size: 1.5rem; backdrop-filter: blur(5px); }
+    #play-overlay h2 { font-family: 'Pacifico', cursive; font-size: 2.8rem; margin-bottom: 0; text-shadow: 0 0 20px #fff; }
+
+    .main-card { background: var(--card-bg); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-radius: 25px; padding: 2.5rem 2rem; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.18); max-width: 420px; width: 90%; z-index: 2; transform-style: preserve-3d; transition: transform 0.1s ease-out; margin-bottom: 5rem; }
+    img { max-width: 100%; height: auto; border-radius: 15px; margin-top: 1rem; box-shadow: 0 0 30px rgba(0,0,0,0.2); animation: float 4s ease-in-out infinite; transform: translateZ(30px); }
+    .title { font-family: 'Pacifico', cursive; font-size: 3rem; font-weight: normal; margin: 1rem 0; background: linear-gradient(90deg, #ffda79, #ffabe1, #a7baff, #ffda79); background-size: 200% auto; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; animation: shimmer 4s linear infinite; transform: translateZ(50px); }
+    .custom-greeting { font-size: 1.2rem; font-weight: 600; color: #f0f0f0; margin-top: 1rem; transform: translateZ(20px); }
+    input[type="text"] { padding: 0.8rem 1rem; margin-top: 1.5rem; border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.5); background: var(--input-bg); color: #333; width: 90%; max-width: 400px; font-size: 1rem; font-family: 'Poppins', sans-serif; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); transition: all 0.3s ease; transform: translateZ(20px); }
+    button { margin-top: 1.5rem; padding: 0.8rem 2rem; border-radius: 30px; font-size: 1rem; font-weight: 600; background: linear-gradient(45deg, #e94057, #f27121); border: none; color: white; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transform: translateZ(20px); }
+    button:hover { transform: translateY(-3px) translateZ(20px); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+    .message { margin-top: 1.5rem; font-size: 1.2rem; color: #fff; font-weight: 600; text-shadow: 0 2px 4px rgba(0,0,0,0.3); min-height: 2em; transform: translateZ(20px); }
+    .whatsapp-btn { background: #25D366; display: none; align-items: center; justify-content: center; gap: 0.5rem; font-weight: bold; }
+    @keyframes shimmer { to { background-position: -200% center; } }
+    @keyframes float { 0%, 100% { transform: translateY(0px) translateZ(30px); } 50% { transform: translateY(-12px) translateZ(30px); } }
+
+    /* Info Section Styles */
+    .info-section { width: 100%; max-width: 600px; z-index: 2; }
+    .info-section h2 {
+      font-family: 'Noto Nastaliq Urdu', 'Pacifico', cursive; /* Use Urdu font first */
+      font-size: 2.8rem;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.4); margin-bottom: 2rem;
+    }
+    .info-card { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 1.5rem; border-radius: 15px; margin-top: 1.5rem; text-align: right; /* Align text to the right for Urdu */ border: 1px solid rgba(255, 255, 255, 0.15); box-shadow: 0 4px 20px rgba(0,0,0,0.2); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .info-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+    .info-card strong {
+      display: block; margin-bottom: 0.5rem; font-size: 1.2rem;
+      font-family: 'Poppins', sans-serif; /* Keep heading in English font */
+      text-align: left; /* Align English heading to the left */
+      color: #ffda79;
+    }
+    /* Style for the Urdu paragraph */
+    .info-card p {
+      font-family: 'Noto Nastaliq Urdu', sans-serif;
+      font-size: 1.2rem;
+      margin: 0;
+      line-height: 2;
+    }
+
+    .ad-container { position: fixed; bottom: 0; left: 0; width: 100%; z-index: 9999; text-align: center; }
+  </style>
+</head>
+<body>
+
+  <div id="background-wrapper"></div>
+  <div id="play-overlay">
+    <div><h2>Jumma Mubarak</h2><p>Tap to continue </p></div>
+  </div>
+
+  <div class="main-card" id="main-card">
+    <h1 class="title">Jumma Mubarak</h1>
+    <img src="giphy.gif" alt="Jumma Mubarak GIF" />
+    <div class="custom-greeting" id="fromMessage" style="display: none;"></div>
+    <input type="text" id="nameInput" placeholder="Enter your beautiful name" />
+    <button onclick="generateWish()">✨ Weave Your Wish</button>
+    <div class="message" id="wishMessage"></div>
+    <button class="whatsapp-btn" id="whatsappBtn" onclick="shareWhatsApp()">🚀 Share the Magic</button>
+  </div>
+  
+  <section class="info-section">
+    <h2 data-aos="fade-down" dir="rtl">جمعہ کی حکمت کے موتی</h2>
+    <div class="info-card" data-aos="fade-up">
+        <strong>Cleanliness is Faith</strong>
+        <p dir="rtl" lang="ur">جمعہ کے دن غسل کریں اور صاف ستھرے اور بہترین کپڑے پہنیں۔</p>
+    </div>
+    <div class="info-card" data-aos="fade-up" data-aos-delay="100">
+        <strong>Light Upon Light</strong>
+        <p dir="rtl" lang="ur">سورۃ الکہف کی تلاوت کریں تاکہ آپ کا ہفتہ نورِ الٰہی سے منور ہو جائے۔</p>
+    </div>
+    <div class="info-card" data-aos="fade-up" data-aos-delay="200">
+        <strong>The Greatest Gift</strong>
+        <p dir="rtl" lang="ur">ہمارے پیارے نبی محمد (ﷺ) پر کثرت سے درود و سلام بھیجیں۔</p>
+    </div>
+     <div class="info-card" data-aos="fade-up" data-aos-delay="300">
+        <strong>The Hour of Acceptance</strong>
+        <p dir="rtl" lang="ur">جمعہ کے دن قبولیت کی خاص گھڑی تلاش کریں جس میں دعائیں ضرور قبول ہوتی ہیں۔</p>
+    </div>
+  </section>
+
+  <audio id="bgMusic" src="song.mp3" loop hidden></audio>
+  <div class="ad-container">
+    <script type="text/javascript">
+      atOptions = { 'key': '288b71e52f03d741ae37bd8b4012e0a4', 'format': 'iframe', 'height': 50, 'width': 320, 'params': {} };
+    </script>
+    <script type="text/javascript" src="//www.highperformanceformat.com/288b71e52f03d741ae37bd8b4012e0a4/invoke.js"></script>
+  </div>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    // All Javascript code remains the same as it handles functionality, not content.
+    // ... (The previous complete JavaScript block goes here) ...
+    const urlParams = new URLSearchParams(window.location.search);
+    const fromName = urlParams.get('from');
+    if (fromName) {
+      const fromMessageBox = document.getElementById("fromMessage");
+      fromMessageBox.style.display = 'block';
+      fromMessageBox.innerHTML = `You have a magical wish from <strong>${decodeURIComponent(fromName)}</strong>! 🌙`;
+    }
+    function generateWish() {
+      const name = document.getElementById("nameInput").value.trim();
+      const messageBox = document.getElementById("wishMessage");
+      const whatsappBtn = document.getElementById("whatsappBtn");
+      if (!name) { messageBox.innerHTML = "Please share your name to weave the magic!"; whatsappBtn.style.display = "none"; return; }
+      const message = `✨ On this blessed day, may your heart be filled with peace. Jumma Mubarak from ${name}!`;
+      messageBox.innerHTML = message;
+      whatsappBtn.style.display = "inline-flex";
+      whatsappBtn.setAttribute("data-name", name);
+    }
+    function shareWhatsApp() {
+      const name = document.getElementById("whatsappBtn").getAttribute("data-name");
+      const link = `${window.location.origin}${window.location.pathname}?from=${encodeURIComponent(name)}`;
+      const fullMessage = `💖✨ *A Special Jumma Mubarak Wish!* ✨💖\n\n${name} is sending you magical vibes!\n\nClick the link to see the magic 👇\n${link}`;
+      window.open(`https://wa.me/?text=${encodeURIComponent(fullMessage)}`, '_blank');
+    }
+    document.addEventListener("DOMContentLoaded", () => {
+      AOS.init({ duration: 800, once: true });
+      const audio = document.getElementById("bgMusic");
+      const playOverlay = document.getElementById("play-overlay");
+      playOverlay.addEventListener('click', () => {
+        audio.play().catch(e => console.error("Audio play failed:", e));
+        playOverlay.style.transition = 'opacity 0.5s ease';
+        playOverlay.style.opacity = '0';
+        setTimeout(() => playOverlay.style.display = 'none', 500);
+      }, { once: true });
+      const card = document.getElementById('main-card');
+      const tiltIntensity = 15;
+      card.addEventListener('mousemove', (e) => {
+        const { left, top, width, height } = card.getBoundingClientRect();
+        const x = e.clientX - left; const y = e.clientY - top;
+        const rotateX = (tiltIntensity / height) * (y - height / 2);
+        const rotateY = -(tiltIntensity / width) * (x - width / 2);
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      });
+      card.addEventListener('mouseleave', () => { card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)'; });
+      const bgWrapper = document.getElementById('background-wrapper');
+      for (let i = 0; i < 50; i++) {
+          let p = document.createElement('div'); p.classList.add('particle');
+          let size = Math.random() * 4 + 1;
+          p.style.cssText = `width:${size}px; height:${size}px; left:${Math.random()*100}%; animation-duration:${Math.random()*10+5}s; animation-delay:${Math.random()*5}s;`;
+          bgWrapper.appendChild(p);
+      }
+      setInterval(() => {
+          let star = document.createElement('div'); star.classList.add('shooting-star');
+          star.style.top = `${Math.random() * 60}%`; star.style.left = `-${Math.random() * 100}%`;
+          bgWrapper.appendChild(star);
+          setTimeout(() => star.remove(), 3000);
+      }, 4000);
+    });
+  </script>
+
+</body>
+</html>
